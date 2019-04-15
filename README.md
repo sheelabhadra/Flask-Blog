@@ -1,0 +1,1 @@
+A simple blog built using Python and Flask. The tutorials are from [Corey Shaefer's lecture series](https://www.youtube.com/watch?v=QnDWIZuWYW0&list=PL-osiE80TeTs4UjLw5MM6OjgkjFeUxCYH&index=2) on Flask on YouTube. 
