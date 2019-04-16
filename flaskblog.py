@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 app = Flask(__name__) # __name__ is the name of the module
 
 # posts is a list of dictionary; there is one dictionarity for each blog post
