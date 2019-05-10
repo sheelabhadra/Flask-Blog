@@ -1,24 +1,9 @@
+from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
 from flaskblog import app, db, bcrypt
 from flaskblog.forms import RegistrationForm, LoginForm, PostForm
 from flaskblog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
-
-# posts is a list of dictionary; there is one dictionarity for each blog post
-posts = [
-    {
-        'author': 'Sheel Dey',
-        'title': 'Blog Post 1',
-        'content': 'First post content',
-        'date_posted': 'April 14, 2019'
-    },
-    {
-        'author': 'Sheel Dey',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'April 15, 2019'
-    }
-]
 
 # we use routes decorators to add pages to the web-
 # decorators are used add additional functionalities to existing functions
@@ -29,6 +14,7 @@ posts = [
 # We can make more than one route refer to the same page
 @app.route("/home")
 def home():
+    posts = Post.query.all()
     return render_template('home.html', posts=posts)
 
 @app.route("/about")
@@ -79,9 +65,19 @@ def account():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
         flash('Your post has been created!', 'success')
         return redirect(url_for('home'))
     return render_template('create_post.html', title='New Post', form=form)
+
+# Go to a specific page for a single post - ID of a post is a part of the route
+@app.route("/post/<int:post_id>")
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template('post.html', title=post.title, post=post)
+
 
 
 
