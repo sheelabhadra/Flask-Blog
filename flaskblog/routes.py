@@ -14,7 +14,8 @@ from flask_login import login_user, current_user, logout_user, login_required
 # We can make more than one route refer to the same page
 @app.route("/home")
 def home():
-    posts = Post.query.all()
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.paginate(page=page, per_page=2)
     return render_template('home.html', posts=posts)
 
 @app.route("/about")
